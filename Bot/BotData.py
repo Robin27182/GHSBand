@@ -11,7 +11,7 @@ class BotData(FileFormatABC):
     bot_manager_id: str
     bot_manager_gmail: str
 
-    librarian_id: str
-    librarian_gmail: str
+    librarian_id: int
+    librarian_gmail: int
 
     version: str = "v1"

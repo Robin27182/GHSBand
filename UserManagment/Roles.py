@@ -1,4 +1,4 @@
-from abc import ABC
+from abc import ABC, ABCMeta
 import discord
 
 class RoleWrapper:
@@ -21,7 +21,7 @@ class RoleWrapper:
     def raw(self):
         return self._role
 
-class RoleMeta(type):
+class RoleMeta(ABCMeta):
     """Allows MarchingRole to be iterable"""
     def __iter__(cls):
         for attr in cls._roles:
@@ -35,13 +35,20 @@ class MarchingRole(ABC, metaclass=RoleMeta):
     _roles follows the format "Name in class": "Name that discord can find"
     """
     @classmethod
-    def resolve_roles(cls, guild: discord.Guild):
+    def resolve_roles(cls, guild: discord.Guild) -> None:
         for attr_name, role_name in cls._roles.items():
             role = discord.utils.get(guild.roles, name=role_name)
             if role is None:
                 raise ValueError(f"Role '{role_name}' not found in guild.")
             wrapped = RoleWrapper(cls, role, role_name)
             setattr(cls, attr_name, wrapped)
+        cls._role_lookup = {getattr(cls, attr).name: getattr(cls, attr) for attr in cls._roles}
+
+    @classmethod
+    def get_role_by_name(cls, name: str) -> RoleWrapper | None:
+        if cls._role_lookup is None:
+            raise RuntimeError(f"{cls.__name__} roles not resolved yet")
+        return cls._role_lookup.get(name)
 
 
 class Instruments(MarchingRole):
@@ -50,20 +57,20 @@ class Instruments(MarchingRole):
     _roles follows the format "Name in class": "Name that discord can find"
     """
     _roles = {
-        "flute": "flute",
-        "clarinet": "clarinet",
-        "alto_sax": "alto sax",
-        "tenor_sax": "tenor sax",
-        "trumpet": "trumpet",
-        "horn": "horn",
-        "trombone": "trombone",
-        "baritone": "baritone",
-        "tuba": "tuba",
-        "snare": "snare",
-        "tenors": "tenors",
-        "bass": "bass",
-        "tambourine": "tambourine",
-        "cymbals": "cymbals",
+        "flute": "Flute",
+        "clarinet": "Clarinet",
+        "alto_sax": "Alto Sax",
+        "tenor_sax": "Tenor Sax",
+        "trumpet": "Trumpet",
+        "horn": "Horn",
+        "trombone": "Trombone",
+        "baritone": "Baritone",
+        "tuba": "Tuba",
+        "snare": "Snare",
+        "tenors": "Tenors",
+        "bass": "Bass",
+        "tambourine": "Tambourine",
+        "cymbals": "Cymbals",
     }
     flute = None
     clarinet = None
@@ -85,10 +92,10 @@ class Sections(MarchingRole):
     _roles follows the format "Name in class": "Name that discord can find"
     """
     _roles = {
-        "percussion": "percussion",
-        "brass": "brass",
-        "woodwind": "woodwind",
-        "color_guard": "color guard",
+        "percussion": "Percussion",
+        "brass": "Brass",
+        "woodwind": "Woodwind",
+        "color_guard": "Color Guard",
     }
     percussion = None
     brass = None
@@ -101,14 +108,12 @@ class Leadership(MarchingRole):
     _roles follows the format "Name in class": "Name that discord can find"
     """
     _roles = {
-        "director": "director",
-        "drum_major": "drum major",
-        "section_leader": "section leader",
-        "head_quartermaster": "head quartermaster",
-        "quartermaster": "quartermaster",
-        "player": "player",
+        "drum_major": "Drum Major",
+        "section_leader": "Section Leader",
+        "head_quartermaster": "Head Quartermaster",
+        "quartermaster": "Quartermaster",
+        "player": "Player",
     }
-    director = None
     drum_major = None
     section_leader = None
     head_quartermaster = None
@@ -121,9 +126,11 @@ class Custom(MarchingRole):
     _roles follows the format "Name in class": "Name that discord can find"
     """
     _roles = {
-        "librarian" : "librarian",
-        "minecraft_server_owner" : "minecraft server owner"
+        "bot_manager" : "Bot Manager",
+        "librarian" : "Librarian"
+        #"minecraft_server_owner" : "minecraft server owner"
     }
+    bot_manager = None
     librarian = None
     minecraft_server_owner = None
 

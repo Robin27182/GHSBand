@@ -1,7 +1,7 @@
 import asyncio
 from enum import Enum, auto
 from pathlib import Path
-from typing import List, Type
+from typing import List, Type, Any, Coroutine
 
 from FileManager.CoreFunction.FileFormatABC import FileFormatABC
 from FileManager.CoreFunction.FileInterpreterABC import FileInterpreterABC
@@ -14,7 +14,7 @@ class SaveMode(Enum):
     remote_and_local = auto()
 
 
-class FileManager:
+class MusicFileManager:
     """
     Use: Make a FileInterpreter and a FileFormat that match your scenario. Need be, give it a RemoteManager (Not your own)
     Under the assumption that:
@@ -52,18 +52,7 @@ class FileManager:
         else:
             raise Exception("You need to pass either a base_dir or remote_manager instance to save files.")
 
-        # This next part is for some sanitization; replace bad characters with weird stuff that we understand.
-        self.replacements = {
-            '<': '_lt_',
-            '>': '_gt_',
-            ':': '_colon_',
-            '"': '_quote_',
-            '/': '_slash_',
-            '\\': '_bslash_',
-            '|': '_pipe_',
-            '?': '_q_',
-            '*': '_star_'
-        }
+
         if local and not self.base_dir.is_dir():
             raise TypeError("The base directory given is not a valid directory")
 
@@ -90,11 +79,6 @@ class FileManager:
         else:
             raise TypeError(f"File {file_name} must be a string or a Path.")
 
-        # Sanitize illegal characters
-        for bad_c, replace_c in self.replacements.items():
-            stem = stem.replace(bad_c, replace_c)
-
-        stem = stem.rstrip(". ") # Windows gets mad
 
         return stem + required_ext
 
@@ -213,24 +197,24 @@ class FileManager:
         await self._delete(file, check_exists=True, sanitize=True)
 
 
-    async def _read_raw(self, file: str | Path) -> str:
+    async def _read_raw(self, file: str | Path) -> bytes:
         """
         We are trusting that the file exists and that the file is a string in remote_only
         These checks should be dealt with in a slightly higher-level function
         """
-        contents: str = None
+        contents_bytes: bytes = None
 
         match self.save_mode:
             case SaveMode.remote_only:
-                contents = await self.remote_manager.read(file)
+                contents_bytes = await self.remote_manager.read(file)
 
             case SaveMode.local_only:
-                contents = await asyncio.to_thread(self._to_path(file).read_text)
+                contents_bytes = await asyncio.to_thread(self._to_path(file).read_bytes)
 
             case SaveMode.remote_and_local:
                 await self._check_contents(file) # Checks if contents match
-                contents = self._to_path(file).read_text() # Doesn't matter if we use the remote drive either.
-        return contents
+                contents_bytes = self._to_path(file).read_bytes() # Doesn't matter if we use the remote drive either.
+        return contents_bytes
 
     async def _read(self, file: str | Path, check_exists = True, sanitize = True) -> Type[FileFormatABC]:
         """A more-specific version of self.read, we just don't want to check/sanitize unnecessarily"""
@@ -246,41 +230,6 @@ class FileManager:
 
     async def read(self, file: str | Path) -> Type[FileFormatABC]:
         return await self._read(file, check_exists=True, sanitize=True) # True, because we are scared of what the user gives
-
-
-    async def _write_raw(self, file: str | Path, file_contents: str) -> None:
-        """
-        We are trusting that the file exists and that the file is a string in remote_only
-        These checks should be dealt with in a slightly higher-level function
-        """
-        match self.save_mode:
-            case SaveMode.remote_only:
-                await self.remote_manager.write(file, file_contents)
-
-            case SaveMode.local_only:
-                file_path: Path = self._to_path(file)
-                await asyncio.to_thread(file_path.write_text, file_contents)
-
-            case SaveMode.remote_and_local:
-                file_path: Path = self._to_path(file)
-                await self.remote_manager.write(file, file_contents)
-                file_path.write_text(file_contents)
-
-    async def _write(self, file: str | Path, formatted: Type[FileFormatABC], create_if_none = False, sanitize = True) -> None:
-        """Does not have a check_exists because that is what create_if_none inherently does."""
-        if sanitize:
-            file: str = self._sanitize_file_name(file)
-
-        # Do not sanitize, we already have
-        if create_if_none and not await self._exist(file, give_error=False, sanitize=False):
-            # Does not check if file is a Path because it was probably sanitized, and not-existing files shouldn't be Paths
-            await self._create(file, sanitize=False)
-
-        contents = self.interpreter.write(formatted)
-        await self._write_raw(file, contents)
-
-    async def write(self, file: str | Path, formatted: Type[FileFormatABC], create_if_none = False) -> None:
-        await self._write(file, formatted, create_if_none, sanitize=True)
 
 
     async def _list_files(self) -> List[str]:

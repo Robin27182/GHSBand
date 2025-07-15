@@ -1,33 +1,31 @@
 import json
 from dataclasses import fields
+from io import BytesIO
+
+import discord
 
 from Bot.BotData import BotData
 from FileManager.CoreFunction.FileInterpreterABC import FileInterpreterABC
-from UserManagment.UserData import UserData
 
 
-class BotDataInterpreter(FileInterpreterABC):
+class MusicInterpreter(FileInterpreterABC):
     """Assume the files exist"""
     @property
     def extension(self) -> str:
-        return ".json"
+        return ".pdf"
 
     def write(self, formatted: BotData) -> str:
         """
         :param formatted: the implemented FileFormat
         :return: a string to directly write to the file
         """
-        format_dict = {}
-        for field in fields(formatted):
-            format_dict[field.name] = getattr(formatted, field.name)
-        return json.dumps(format_dict, indent=4)
+        raise Exception("This is intended to be a read-only implementation of Filemanager")
 
-    def read(self, file_contents: str) -> BotData:
+    def read(self, pdf_bytes: bytes) -> discord.file:
         """
         :param file_contents: the raw contents of the written file
         :return: the expected implementation of FileFormatABC
         """
-        data = json.loads(file_contents)
-        field_names = {f.name for f in fields(BotData)}
-        filtered_data = {k: v for k, v in data.items() if k in field_names}
-        return BotData(**filtered_data)
+        file_stream = BytesIO(pdf_bytes)
+        discord_file = discord.File(fp=file_stream, filename="Default.pdf")
+        return discord_file

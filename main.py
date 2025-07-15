@@ -1,13 +1,27 @@
+from typing import Type
+
 import discord
-from discord import Member, app_commands
+from discord import Member
 from discord.ext import commands
 import logging
 from dotenv import load_dotenv
-
 import os
+from pathlib import Path
 
+from Bot.BotData import BotData
+from Bot.CommandRegistry import CommandRegistry
+from FileManager.CoreFunction.FileInterpreterABC import FileInterpreterABC
+from FileManager.CoreFunction.FileManager import FileManager
+from FileManager.CoreFunction.MusicFileManager import MusicFileManager
+from FileManager.FileImplement.BotDataInterpreter import BotDataInterpreter
+from FileManager.FileImplement.MusicInterpreter import MusicInterpreter
+from FileManager.FileImplement.UserDataInterpreter import UserDataInterpreter
 
-load_dotenv()
+from UserManagment.BandMemberManager import BandMemberManager
+from UserManagment.Roles import Instruments, Sections, Leadership, Custom
+
+load_dotenv(dotenv_path=Path(__file__).parent / "SensitiveInfo" / ".env")
+
 token = os.getenv("DISCORD_TOKEN")
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
@@ -16,34 +30,72 @@ intents.message_content = True
 intents.members = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
-guild = None
+guild = None  # Will be assigned on_ready
+
+current_dir = Path(__file__).parent.resolve()
+
+
+
 
 @bot.event
 async def on_ready():
-    """
-    Because we need to talk to discord, we need the bot set up, so that's why there are declarations here
-    We are assuming that the server has resorted to primitive states. Fix everything to match files
-    """
     global guild
-    guild = bot.guilds[0] # Bad, but other methods were not working
+    guild = bot.guilds[1]  # Use your guild selection method
+    print(f"Logged in as {bot.user} (ID: {bot.user.id})")
 
+    command_registry = CommandRegistry("config")
+    for cmd in command_registry.registered_commands:
+        bot.tree.add_command(cmd, guild=discord.Object(id=guild.id))
 
+    await bot.tree.sync(guild=guild)
+
+    sensitive_dir = current_dir / "SensitiveInfo"
+
+    user_data_interpreter: Type[FileInterpreterABC] = UserDataInterpreter()
+    user_data_manager: FileManager = FileManager(user_data_interpreter,
+                                                 base_dir=sensitive_dir/"UserData",
+                                                 remote_manager=None)
+
+    bot_data_interpreter: Type[FileInterpreterABC] = BotDataInterpreter()
+    bot_data_manager = FileManager(bot_data_interpreter,
+                                   base_dir=sensitive_dir/"BotData",
+                                   remote_manager=None)
+
+    music_interpreter = MusicInterpreter()
+    music_manager = MusicFileManager(music_interpreter,
+                                     base_dir=sensitive_dir/"test",
+                                     remote_manager=None)
+
+    file = await music_manager.read("marching_bird-All.pdf")
+    channel = bot.get_channel(1382375540647923832)  # Replace with the actual channel ID
+    await channel.send("Hello in a specific channel!", files=[file])
+
+    bot_data: BotData = await bot_data_manager.read(str(guild.id))
+
+    band_member_manager = BandMemberManager(guild, user_data_manager, bot_data)
+    await band_member_manager.create_all_band_members()
+
+    print("stop waiting idiot")
+
+def resolve_all_roles(guild: discord.Guild):
+    Leadership.resolve_roles(guild)
+    Sections.resolve_roles(guild)
+    Instruments.resolve_roles(guild)
+    Custom.resolve_roles(guild)
 
 @bot.event
 async def on_member_join(member: Member):
-    ...
+    pass
+
 
 @bot.event
 async def on_message(message):
-    ...
+    pass
+
 
 @bot.event
-async def on_member_update(before: discord.member, after: discord.member):
-    ...
+async def on_member_update(before: discord.Member, after: discord.Member):
+    pass
 
-@bot.tree.command(name="swapper", description="Pick your section.")
-@app_commands.guilds(discord.Object(id=server_id))
-async def _swapper_command(interaction: discord.Interaction):
-    ...
 
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)
