@@ -1,10 +1,6 @@
-from dataclasses import asdict
-
 import discord
 
-from Bot.BotData import BotData
-from FileManager.FileImplement.FileManagerShard import FileManagerShard
-from UserManagment.BandInvolvement import BandInvolvement
+from FileManager.FileManagerShard import FileManagerShard
 from UserManagment.UserData import UserData
 
 
@@ -42,3 +38,7 @@ class BandMember:
 
     async def update_current_info(self):
         await self._file_manager_shard.write(self.user_data, False)
+
+    async def wipe_info(self):
+        self._user_data = UserData(user_name=self.member.name)
+        await self.update_current_info()

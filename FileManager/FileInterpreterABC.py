@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Type
 
-from FileManager.CoreFunction.FileFormatABC import FileFormatABC
+from FileManager.FileFormatABC import FileFormatABC
 
 
 class FileInterpreterABC(ABC):

@@ -1,12 +1,12 @@
-from site import USER_BASE
 from typing import List
 
 import discord
 
 from Bot.BotData import BotData
-from FileManager.CoreFunction.FileManager import FileManager
-from FileManager.FileImplement.FileManagerShard import FileManagerShard
-from UserManagment.BandInvolvement import BandInvolvement
+from DataStructure.Band import Band
+from FileManager.FileManager import FileManager
+from FileManager.FileManagerShard import FileManagerShard
+from DataStructure.BandInvolvement import BandInvolvement
 from UserManagment.BandMember import BandMember
 from UserManagment.RoleManager import RoleManager
 from UserManagment.Roles import Leadership, Sections, Instruments, Custom
@@ -22,6 +22,7 @@ class BandMemberManager:
         self.band_members = []
 
     async def get_band_member(self, member: discord.Member):
+        print(member)
         member = self.guild.get_member(member.id) # Refers to the member in the server, not the member in the DM.
         for band_mem in self.band_members:
             if member == band_mem:
@@ -51,11 +52,12 @@ class BandMemberManager:
         for category in (Leadership, Sections, Instruments, Custom):
             await self.role_manager.remove_category(band_member, category)
 
-        involvement: List[BandInvolvement] = [
-            user_data.marching_involvement if self.bot_data.marching_season else None,
-            user_data.concert_involvement if self.bot_data.concert_season else None,
-            user_data.pep_involvement if self.bot_data.pep_season else None,
-        ]
+        active_bands: List[Band] = []
+        for band in self.bot_data.bands:
+            if band.in_season:
+                active_bands.append(band)
+
+
 
         for band_involvement in filter(None, involvement):
             if not band_involvement.band_participant:

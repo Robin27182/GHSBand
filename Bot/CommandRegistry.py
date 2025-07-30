@@ -1,13 +1,19 @@
 import discord
 from discord import app_commands
 
+from MusicManagment.MusicManager import MusicManager
+from Prompter.ComplexPrompts.GeneralPrompt import GeneralPrompt
+from UserManagment.BandMemberManager import BandMemberManager
+
+
 class CommandRegistry:
-    def __init__(self, config):
+    def __init__(self, band_member_manager: BandMemberManager, music_manager: MusicManager):
         """
         Weird implementation to get the constants in, discord doesn't like commands that have "self."
         :param config:
         """
-        self.config = config
+        self.band_member_manager = band_member_manager
+        self.music_manager = music_manager
         self.registered_commands: list[app_commands.Command] = []
 
         for attr_name in dir(self):
@@ -48,3 +54,8 @@ class CommandRegistry:
     @slash_command("meganinflation", "Not happening")
     async def megan_command(self, interaction: discord.Interaction):
         await interaction.response.send_message("Megan eats 1 million burgers, light work")
+
+    @slash_command("ask", "oh gosh")
+    async def megan_command(self, interaction: discord.Interaction):
+        band_member = await self.band_member_manager.get_band_member(interaction.user)
+        await GeneralPrompt.ask(band_member, self.music_manager, None)

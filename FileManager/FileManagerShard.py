@@ -1,7 +1,7 @@
 from typing import Final, Type
 
-from FileManager.CoreFunction.FileFormatABC import FileFormatABC
-from FileManager.CoreFunction.FileManager import FileManager
+from FileManager.FileFormatABC import FileFormatABC
+from FileManager.FileManager import FileManager
 
 
 class FileManagerShard:

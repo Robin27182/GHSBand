@@ -34,6 +34,7 @@ class MarchingRole(ABC, metaclass=RoleMeta):
     All inheriting classes are expected to have _roles, and the class variables associated
     _roles follows the format "Name in class": "Name that discord can find"
     """
+
     @classmethod
     def resolve_roles(cls, guild: discord.Guild) -> None:
         for attr_name, role_name in cls._roles.items():
@@ -42,7 +43,7 @@ class MarchingRole(ABC, metaclass=RoleMeta):
                 raise ValueError(f"Role '{role_name}' not found in guild.")
             wrapped = RoleWrapper(cls, role, role_name)
             setattr(cls, attr_name, wrapped)
-        cls._role_lookup = {getattr(cls, attr).name: getattr(cls, attr) for attr in cls._roles}
+        cls._role_lookup = {getattr(cls, attr).name.lower(): getattr(cls, attr) for attr in cls._roles}
 
     @classmethod
     def get_role_by_name(cls, name: str) -> RoleWrapper | None:

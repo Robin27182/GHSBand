@@ -3,9 +3,9 @@ from enum import Enum, auto
 from pathlib import Path
 from typing import List, Type
 
-from FileManager.CoreFunction.FileFormatABC import FileFormatABC
-from FileManager.CoreFunction.FileInterpreterABC import FileInterpreterABC
-from FileManager.CoreFunction.RemoteManagerABC import RemoteManagerABC
+from FileManager.FileFormatABC import FileFormatABC
+from FileManager.FileInterpreterABC import FileInterpreterABC
+from FileManager.RemoteManagerABC import RemoteManagerABC
 
 
 class SaveMode(Enum):

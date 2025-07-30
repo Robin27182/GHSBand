@@ -1,13 +1,11 @@
 import json
 from dataclasses import asdict
-from typing import Any
 
-from MusicManagment.Music import Music
 from UserManagment.UserData import UserData
-from UserManagment.BandInvolvement import BandInvolvement
+from DataStructure.BandInvolvement import BandInvolvement
 from UserManagment.Roles import RoleWrapper, Leadership, Sections, Instruments, Custom
 
-from FileManager.CoreFunction.FileInterpreterABC import FileInterpreterABC
+from FileManager.FileInterpreterABC import FileInterpreterABC
 
 
 class UserDataInterpreter(FileInterpreterABC):
@@ -54,7 +52,7 @@ class UserDataInterpreter(FileInterpreterABC):
 
     def _dict_to_band_involvement(self, data: dict) -> BandInvolvement:
         music_list = data.get("music", [])
-        music_objs = [Music(**m) for m in music_list]
+        music_objs = 1
         return BandInvolvement(
             band_name=data.get("band_name"),
             band_participant=data.get("band_participant"),

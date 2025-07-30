@@ -1,7 +1,7 @@
 from typing import List
 import boto3
 
-from FileManager.CoreFunction.RemoteManagerABC import RemoteManagerABC
+from FileManager.RemoteManagerABC import RemoteManagerABC
 
 
 class BackBlazeManager(RemoteManagerABC):

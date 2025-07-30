@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="79fc2e7b-77a5-4bc4-97f5-20e111372073" name="Changes" comment="Implemented so freaking much. We can send pdfs now, we can assign roles to people, we can manage the files behind user data, bot data, and music objects that will eventually request the discord.file objects from MusicManager.py. Other changes were made as some basic fixes or quality-of-life kinda stuff.">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataStructure/Band.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DataStructure/Song.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MusicManagment/DropboxManager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/BoolPrompt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/InstrumentPrompt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/MusicPrompt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/Prompt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/PromptButton.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/PromptManager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/BasicPrompts/SectionPrompt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Prompter/ComplexPrompts/GeneralPrompt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bot/BotData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bot/BotData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bot/CommandRegistry.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bot/CommandRegistry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/CoreFunction/FileFormatABC.py" beforeDir="false" afterPath="$PROJECT_DIR$/FileManager/FileFormatABC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/CoreFunction/FileInterpreterABC.py" beforeDir="false" afterPath="$PROJECT_DIR$/FileManager/FileInterpreterABC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/CoreFunction/FileManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/FileManager/FileManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/CoreFunction/MusicFileManager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/CoreFunction/RemoteManagerABC.py" beforeDir="false" afterPath="$PROJECT_DIR$/FileManager/RemoteManagerABC.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/FileImplement/BackBlazeManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserManagment/BackBlazeManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/FileImplement/BotDataInterpreter.py" beforeDir="false" afterPath="$PROJECT_DIR$/Bot/BotDataInterpreter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/FileImplement/DropboxManager.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/FileImplement/FileManagerShard.py" beforeDir="false" afterPath="$PROJECT_DIR$/FileManager/FileManagerShard.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/FileImplement/MusicInterpreter.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FileManager/FileImplement/UserDataInterpreter.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserManagment/UserDataInterpreter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicManagment/Music.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataStructure/Music.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MusicManagment/MusicManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/MusicManagment/MusicManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserManagment/BandInvolvement.py" beforeDir="false" afterPath="$PROJECT_DIR$/DataStructure/BandInvolvement.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserManagment/BandMember.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserManagment/BandMember.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserManagment/BandMemberManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserManagment/BandMemberManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserManagment/Roles.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserManagment/Roles.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UserManagment/UserData.py" beforeDir="false" afterPath="$PROJECT_DIR$/UserManagment/UserData.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/discord.log" beforeDir="false" afterPath="$PROJECT_DIR$/discord.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Robin27182&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Robin27182/GHSBand.git&quot;,
+    &quot;accountId&quot;: &quot;8d164c87-2bae-43d7-b9b8-0aad69a2f6d6&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2zjYrrSPQ0E0iGcuXG9PdAiUSrg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.CommandRegistry.executor": "Run",
+    "Python.CommandsRegistry.executor": "Run",
+    "Python.MusicInterpreter.executor": "Run",
+    "Python.NewCommand.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/Robin/New Code/Python/GHSBand/SensitiveInfo/test"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\SensitiveInfo\test" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\UserManagment" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\SensitiveInfo" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\DataStructure" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\Prompter\BasicPrompts" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\FileManager" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\FileManager\CoreFunction" />
+      <recent name="C:\Users\Robin\New Code\Python\GHSBand\UserManagment" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-348a24fa61fa-5312c7369657-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.23774.444" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="79fc2e7b-77a5-4bc4-97f5-20e111372073" name="Changes" comment="" />
+      <created>1752246150947</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1752246150947</updated>
+    </task>
+    <task id="LOCAL-00001" summary="This is the start of the outline for the project. Much is unimplemented, but that will be hopefully solved.">
+      <option name="closed" value="true" />
+      <created>1752378289568</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1752378289568</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Implemented so freaking much. We can send pdfs now, we can assign roles to people, we can manage the files behind user data, bot data, and music objects that will eventually request the discord.file objects from MusicManager.py. Other changes were made as some basic fixes or quality-of-life kinda stuff.">
+      <option name="closed" value="true" />
+      <created>1752553184848</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1752553184848</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="This is the start of the outline for the project. Much is unimplemented, but that will be hopefully solved." />
+    <MESSAGE value="Implemented so freaking much. We can send pdfs now, we can assign roles to people, we can manage the files behind user data, bot data, and music objects that will eventually request the discord.file objects from MusicManager.py. Other changes were made as some basic fixes or quality-of-life kinda stuff." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented so freaking much. We can send pdfs now, we can assign roles to people, we can manage the files behind user data, bot data, and music objects that will eventually request the discord.file objects from MusicManager.py. Other changes were made as some basic fixes or quality-of-life kinda stuff." />
+  </component>
+</project>
